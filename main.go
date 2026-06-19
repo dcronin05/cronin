@@ -185,6 +185,14 @@ func runBackground(ttyPath string, args []string, isLive bool) {
 }
 
 func getClipboard() []byte {
+	// Try macOS
+	if out, err := exec.Command("pbpaste").Output(); err == nil {
+		return out
+	}
+	// Try Windows
+	if out, err := exec.Command("powershell", "-command", "Get-Clipboard").Output(); err == nil {
+		return out
+	}
 	// Try Wayland
 	if out, err := exec.Command("wl-paste").Output(); err == nil {
 		return out
