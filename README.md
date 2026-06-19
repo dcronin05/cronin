@@ -11,6 +11,10 @@ Download the latest binary for your operating system from the [Releases](https:/
 ## Usage
 
 ```bash
+# Configure your endpoint and token first!
+export CRONIN_ENDPOINT="https://your-agent-url.com/webhook/stream"
+export CRONIN_TOKEN="your-super-secret-token"
+
 # Send a basic prompt
 cronin "What is the capital of France?"
 

@@ -116,8 +116,19 @@ func runBackground(ttyPath string, args []string, isLive bool) {
 	}
 	jsonData, _ := json.Marshal(payload)
 
-	req, _ := http.NewRequest("POST", "https://agy.cronin.one/webhook/stream", bytes.NewBuffer(jsonData))
+	endpoint := os.Getenv("CRONIN_ENDPOINT")
+	if endpoint == "" {
+		endpoint = "http://localhost:8081/webhook/stream"
+	}
+
+	req, _ := http.NewRequest("POST", endpoint, bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
+	
+	token := os.Getenv("CRONIN_TOKEN")
+	if token != "" {
+		req.Header.Set("Authorization", "Bearer " + token)
+	}
+
 	if isLive {
 		req.Header.Set("X-Live-Mode", "true")
 	}
